@@ -24,25 +24,25 @@ format:
 ---
 
 ```{python}
-#| label: libraries
-#| include: false
+# | label: libraries
+# | include: false
 # import requests
 import pandas as pd
 import altair as alt
 import numpy as np
+
 ```
 
 
 ## Elevator pitch
-_We've successfully set up a robust Python environment and created an insightful Altair chart that highlights a key trend: as engine displacement increases, highway mileage decreases, with a few exceptions in Chevrolet cars with engine displacement between 5 and 7 liters.
-You are provided with a chart showcasing this trend, as well as a sample table of the dataset.
-With our Python environment set up, we are ready to dive deeper into the data analysis of this dataset._
+_This dataset provides the birth names by year in the US and by state. It allows us to easily find trends and compare names.
+Here we show that it can be used to determine the probable age of someone according to their age. We can also use it to look at a group of names with a common charasteritic (e.g. Christian names), and compare their usage. Finally, we used it to show that movies can have a significant impact of birth names._
 
 ```{python}
-#| label: Birth names by year with counts for US states as well
-#| code-summary: Read project data
-# Read the data from the project repository on GitHub and store it in a dataframe called "mpg".
+# | label: Birth names by year with counts for US states as well
+# | code-summary: Read project data
 
+# Read the data from the project repository on GitHub, write it to a local file, then store it in a dataframe called "df".
 # url = "https://raw.githubusercontent.com/byuidatascience/data4names/master/data-raw/names_year/names_year.csv"
 # response = requests.get(url)
 # if response.status_code == 200:
@@ -54,7 +54,7 @@ With our Python environment set up, we are ready to dive deeper into the data an
 
 df = pd.read_csv("names_year.csv")
 
-duplicate_rows = df[df.duplicated(subset=['name', 'year'], keep=False)]
+duplicate_rows = df[df.duplicated(subset=["name", "year"], keep=False)]
 
 if not duplicate_rows.empty:
     print("Duplicate rows found:")
@@ -67,21 +67,20 @@ else:
 ## QUESTION|TASK 1
 __How does your name at your birth year compare to its use historically?__
 
-_In 1988, Julien was a rather rare name in the United States, with only 47 babies receiving it. Fast forward 20 years and it increased almost 10 folds with 429 new occurences. That name started growing in popularity only 3 to 4 years before my birth._
+_In 1988, Julien was a rather rare name in the United States, with only 47 babies receiving it. Fast forward 20 years and it increased almost 10 folds with 429 new occurences. That name started growing in popularity only 3 to 4 years before 1988._
 
 ```{python}
 # | label: Q1
 # | code-summary: Filter data by name then plot
 
-name = "Julien"
-
 # Create a chart using the Altair library and the df dataset
 # with year on the x-axis and total count on the y-axis.
 # filter by name
+name = "Julien"
 chart = (
     alt.Chart(df.query(f"name == '{name}'"))
     .encode(
-        x=alt.X("year", title="Year"),
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
         y=alt.Y("Total", title="Total Count"),
         tooltip=["year", "Total"],
     )
@@ -114,15 +113,14 @@ _Brittany is most likely to be 33 years old, since that name reached its peak in
 # | label: Q2
 # | code-summary: Filter data by name then plot
 
-name = "Brittany"
-
 # Create a chart using the Altair library and the df dataset
 # with year on the x-axis and total count on the y-axis.
 # filter by name
+name = "Brittany"
 chart = (
     alt.Chart(df.query(f"name == '{name}'"))
     .encode(
-        x=alt.X("year", title="Year"),
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
         y=alt.Y("Total", title="Total Count"),
         tooltip=["year", "Total"],
     )
@@ -138,19 +136,20 @@ _TODO_
 ## QUESTION|TASK 3
 __Mary, Martha, Peter, and Paul are all Christian names. From 1920 - 2000, compare the name usage of each of the four names. What trends do you notice?__
 
+_Those four Christian names all saw a significant decline at the end of the 60's, and haven't recovered so far._
+
 ```{python}
 # | label: Q3
 # | code-summary: Filter data by names then plot
 
-names = ["Mary", "Martha", "Peter", "Paul"]
-
 # Create a chart using the Altair library and the df dataset
 # with year on the x-axis and total count on the y-axis.
 # filter by names
+names = ["Mary", "Martha", "Peter", "Paul"]
 chart = (
     alt.Chart(df.query(f"name in {names}"))
     .encode(
-        x=alt.X("year", title="Year"),
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
         y=alt.Y("Total", title="Total Count"),
         tooltip=["year", "Total", "name"],
         color="name",
@@ -165,28 +164,28 @@ chart
 ## QUESTION|TASK 4
 __Think of a unique name from a famous movie. Plot the usage of that name and see how changes line up with the movie release. Does it look like the movie had an effect on usage?__
 
+_Before 2001 and the release of the French movie The Fabulous Destiny Of Amélie Poulain, the name Amelie was virtually unknown in the US. After the huge success of this movie in the United states, hundreds of babies have received this name every year._
+
 ```{python}
 # | label: Q4
 # | code-summary: Filter data by name then plot
 
+# Create a chart using the Altair library and the df dataset
+# with year on the x-axis and total count on the y-axis.
 movie = {
     "title": "The Fabulous Destiny Of Amélie Poulain",
     "year": 2001,
     "name": "Amelie",
 }
-
-# Create a chart using the Altair library and the df dataset
-# with year on the x-axis and total count on the y-axis.
-# filter by name
 chart = (
     alt.Chart(df.query(f"name == '{movie['name']}'"))
     .encode(
-        x=alt.X("year", title="Year"),
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
         y=alt.Y("Total", title="Total Count"),
         tooltip=["year", "Total"],
     )
     .mark_line()
-    .properties(title=f"{movie['name']}'s Counts by Year") 
+    .properties(title=f"{movie['name']}'s Counts by Year")
 )
 
 # Add a vertical line at movie release year
@@ -216,51 +215,126 @@ chart
 ```
 import pandas as pd
 import altair as alt
+import numpy as np
 
-# Read the data from the project repository on GitHub and store it in a dataframe called "mpg".
-url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/mpg/mpg.csv"
-mpg = pd.read_csv(url)
+# Read the data from the project repository on GitHub, write it to a local file, then store it in a dataframe called "df".
+# url = "https://raw.githubusercontent.com/byuidatascience/data4names/master/data-raw/names_year/names_year.csv"
+# response = requests.get(url)
+# if response.status_code == 200:
+#     data = response.text
+#     with open("names_year.csv", "w") as file:
+#         file.write(data)
+# else:
+#     print("Failed to fetch data from the URL")
 
-# Create a chart using the Altair library and the mpg dataset 
-# with engine displacement on the x-axis and highway mileage on the y-axis, as well as color-coded by manufacturer.
-# Add tooltips for manufacturer, model, year, highway mileage, and engine displacement.
-chart = (alt.Chart(mpg)
-  .encode(
-    x=alt.X('displ', title='Engine Displacement'),
-    y=alt.Y('hwy', title='Highway Mileage'),
-    color=alt.Color('manufacturer'),
-    tooltip=['manufacturer', 'model', 'year', 'hwy', 'displ']
-  )
-  .mark_circle()
-  .properties(
-    title='Highway Mileage vs. Engine Displacement by Manufacturer'
-  )
+df = pd.read_csv("names_year.csv")
+
+duplicate_rows = df[df.duplicated(subset=["name", "year"], keep=False)]
+
+if not duplicate_rows.empty:
+    print("Duplicate rows found:")
+    print(duplicate_rows)
+else:
+    print("No duplicate rows found.")
+
+# Create a chart using the Altair library and the df dataset
+# with year on the x-axis and total count on the y-axis.
+# filter by name
+name = "Julien"
+chart = (
+    alt.Chart(df.query(f"name == '{name}'"))
+    .encode(
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
+        y=alt.Y("Total", title="Total Count"),
+        tooltip=["year", "Total"],
+    )
+    .mark_line()
+    .properties(title=f"{name}'s Counts by Year")
 )
 
-# Print the chart
+# Add a vertical line at year 1988
+vertical_marker = (
+    alt.Chart(pd.DataFrame({"year": [1988]})).mark_rule(color="red").encode(x="year")
+)
+# Add text label "1988" to the red line
+text_label = (
+    alt.Chart(pd.DataFrame({"year": [1988], "label": ["1988"]}))
+    .mark_text(align="right", baseline="middle", color="red", dx=-5, dy=5)
+    .encode(x="year", text="label:N")
+)
+chart = chart + vertical_marker + text_label
+
 chart
 
-# Print the first 5 rows of the "mpg" dataframe
-# Only include the columns "manufacturer", "model", "year", and "hwy" in the table.
-# Use the to_markdown() method to print the table. 
-# Do not include the index column.
-print(mpg
-  .head(5)
-  .filter(["manufacturer", "model","year", "hwy"])
-  .to_markdown(index=False))
+# Create a chart using the Altair library and the df dataset
+# with year on the x-axis and total count on the y-axis.
+# filter by name
+name = "Brittany"
+chart = (
+    alt.Chart(df.query(f"name == '{name}'"))
+    .encode(
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
+        y=alt.Y("Total", title="Total Count"),
+        tooltip=["year", "Total"],
+    )
+    .mark_line()
+    .properties(title=f"{name}'s Counts by Year")
+)
 
+chart
 
+# Create a chart using the Altair library and the df dataset
+# with year on the x-axis and total count on the y-axis.
+# filter by names
+names = ["Mary", "Martha", "Peter", "Paul"]
+chart = (
+    alt.Chart(df.query(f"name in {names}"))
+    .encode(
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
+        y=alt.Y("Total", title="Total Count"),
+        tooltip=["year", "Total", "name"],
+        color="name",
+    )
+    .mark_line()
+    .properties(title="Christian names Counts by Year")
+)
+
+chart
+
+# Create a chart using the Altair library and the df dataset
+# with year on the x-axis and total count on the y-axis.
+movie = {
+    "title": "The Fabulous Destiny Of Amélie Poulain",
+    "year": 2001,
+    "name": "Amelie",
+}
+chart = (
+    alt.Chart(df.query(f"name == '{movie['name']}'"))
+    .encode(
+        x=alt.X("year", title="Year", axis=alt.Axis(format="d")),
+        y=alt.Y("Total", title="Total Count"),
+        tooltip=["year", "Total"],
+    )
+    .mark_line()
+    .properties(title=f"{movie['name']}'s Counts by Year")
+)
+
+# Add a vertical line at movie release year
+vertical_marker = (
+    alt.Chart(pd.DataFrame({"year": [movie["year"]]}))
+    .mark_rule(color="red")
+    .encode(x="year")
+)
+
+# Add text label for movie title
+text_label = (
+    alt.Chart(pd.DataFrame({"year": [movie["year"]], "label": [f"{movie['title']}"]}))
+    .mark_text(align="right", baseline="middle", color="red", dx=-5, dy=5)
+    .encode(x="year", text="label:N")
+)
+chart = chart + vertical_marker + text_label
+
+chart
 ```
 ```
 ```
-
-<!-- ```{python}
-# find how many Oliver in Utah for all years
-name = "Oliver"
-name_data = df.query(f"name == '{name}'")[["UT"]]
-total_oliver_in_utah = name_data["UT"].sum()
-print(total_oliver_in_utah)
-
-earliest_year = df.query('name == "Felisha"')['year'].min()
-print(earliest_year)
-``` -->
