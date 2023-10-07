@@ -1,0 +1,28 @@
+```{python}
+import pandas as pd
+import altair as alt
+import numpy as np
+from scipy import stats
+
+flights_url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/flights/flights.csv"
+
+flights = pd.read_csv(flights_url)
+# flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+```
+
+```{python}
+chart = (
+    alt.Chart(flights)
+    .mark_circle()
+    .encode(
+        x=alt.X("distance", title="Distance (miles)"),
+        y=alt.Y("air_time", title="Air Time (minutes)"),
+        color=alt.Color("carrier", title="Carrier"),
+        tooltip=["distance", "air_time", "carrier"],
+    )
+    .properties(title="Air Time vs. Distance by Carrier")
+    .interactive()
+)
+
+chart
+```
