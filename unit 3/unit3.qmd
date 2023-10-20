@@ -1,0 +1,150 @@
+---
+title: "Client Report - Project 2: Late flights and missing data"
+subtitle: "Course DS 250"
+author: "Julien Connault"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+# | label: libraries
+# | include: false
+# import requests
+import pandas as pd
+import altair as alt
+import numpy as np
+
+```
+
+
+## Elevator pitch
+_TODO_
+
+```{python}
+# | label: Monthly Airline Delays by Airport for US Flights, 2003-2016
+# | code-summary: Read project data
+
+import pandas as pd
+import numpy as np
+import altair as alt
+import sqlite3
+
+sqlite_file = "lahmansbaseballdb.sqlite"
+con = sqlite3.connect(sqlite_file)
+
+q = "SELECT * FROM collegeplaying WHERE schoolID LIKE '%byui%';"
+batting5 = pd.read_sql_query(q, con)
+
+batting5.head(1000)
+```
+
+```
+```{python}
+table = pd.read_sql_query(
+    "SELECT * FROM sqlite_master WHERE type='table'",
+    con)
+print(table.filter(['name']))
+print('\n\n')
+print(table.sql[8])
+```
+
+
+## QUESTION|TASK 1
+__Write an SQL query to create a new dataframe about baseball players who attended BYU-Idaho. The new table should contain five columns: playerID, schoolID, salary, and the yearID/teamID associated with each salary. Order the table by salary (highest to lowest) and print out the table in your report.__
+
+```{python}
+# | label: Q1
+# | code-summary: SQL query that creates a new dataframe about baseball players who attended BYU-Idaho
+
+q = "SELECT cp.playerID, cp.schoolID, s.salary, cp.yearID, s.teamID FROM collegeplaying AS cp JOIN salaries AS s ON cp.playerID = s.playerID WHERE cp.schoolID = 'idbyuid' ORDER BY s.salary DESC;"
+byuidaho = pd.read_sql_query(q, con)
+
+byuidaho
+```
+
+
+## QUESTION|TASK 2
+__This three-part question requires you to calculate batting average (number of hits divided by the number of at-bats)__
+
+
+- Write an SQL query that provides playerID, yearID, and batting average for players with at least 1 at bat that year. Sort the table from highest batting average to lowest, and then by playerid alphabetically. Show the top 5 results in your report.
+```{python}
+# | label: Q2 part 1
+# | code-summary: TODO
+
+q = "SELECT playerID, yearID, H, AB, CAST(H AS REAL) / CAST(AB AS REAL) AS batting_average FROM batting WHERE AB > 1 ORDER BY batting_average DESC, playerID ASC LIMIT 5;"
+batting = pd.read_sql_query(q, con)
+
+
+# q = "SELECT (H/AB) AS batting_average FROM batting WHERE AB > 0"
+# batting = pd.read_sql_query(q, con)
+
+
+# q = "SELECT * from batting WHERE AB > 0 AND H > 0;"
+# batting = pd.read_sql_query(q, con)
+
+batting
+
+```
+
+- Use the same query as above, but only include players with at least 10 at bats that year. Print the top 5 results.
+```{python}
+# | label: Q2 part 2
+# | code-summary: TODO
+
+q = "SELECT playerID, yearID, H, AB, CAST(H AS REAL) / CAST(AB AS REAL) AS batting_average FROM batting WHERE AB > 10 ORDER BY batting_average DESC, playerID ASC LIMIT 5;"
+batting = pd.read_sql_query(q, con)
+batting
+```
+
+- Now calculate the batting average for players over their entire careers (all years combined). Only include players with at least 100 at bats, and print the top 5 results.
+```{python}
+# | label: Q2 part 3
+# | code-summary: TODO
+
+q = "SELECT playerID, AVG(CAST(H AS REAL) / CAST(AB AS REAL)) AS career_batting_average FROM batting WHERE AB > 100 GROUP BY playerID ORDER BY career_batting_average DESC, playerID ASC LIMIT 5;"
+batting = pd.read_sql_query(q, con)
+batting
+```
+
+
+## QUESTION|TASK 3
+__Pick any two baseball teams and compare them using a metric of your choice (average salary, home runs, number of wins, etc). Write an SQL query to get the data you need, then make a graph in Altair to visualize the comparison. What do you learn?__
+
+_TODO._
+
+```{python}
+# | label: Q3
+# | code-summary: TODO
+
+```
+
+## APPENDIX A (All Python Code)
+
+```python
+```
+```
+import pandas as pd
+import altair as alt
+import numpy as np
+
+```
+```
+```
