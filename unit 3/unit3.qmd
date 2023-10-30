@@ -24,7 +24,8 @@ format:
 ---
 
 ## Elevator pitch
-__
+_This dataset is the Lahman Baseball db, a database containing complete batting and pitching statistics from 1871 to 2018, plus fielding statistics, standings, team stats, managerial records, post-season data, and more. Here we used it to retrieve information about BYU-Idaho baseball players, batting averages, and average salaries for the New York Yankees and the Boston Red Sox._
+
 
 ```{python}
 # | label: Monthly Airline Delays by Airport for US Flights, 2003-2016
@@ -105,7 +106,7 @@ salary = pd.read_sql_query(q, con)
 
 # Altair Graph
 alt.Chart(salary).mark_line().encode(
-    x=alt.X("yearID", title="Year"),
+    x=alt.X("yearID", title="Year", axis=alt.Axis(format="d")),
     y=alt.Y("average_salary", title="Average Salary"),
     color="teamID",
 )
