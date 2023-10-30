@@ -8,7 +8,7 @@
 
 <meta name="author" content="Julien Connault">
 
-<title>Client Report - Project 2: Late flights and missing data</title>
+<title>Client Report - Project 3: Finding relationships in baseball</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3026,7 +3026,7 @@ vertical-align: -.125em;
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page">
-      <div class="quarto-title-block"><div><h1 class="title">Client Report - Project 2: Late flights and missing data</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> See code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+      <div class="quarto-title-block"><div><h1 class="title">Client Report - Project 3: Finding relationships in baseball</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> See code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
             <p class="subtitle lead">Course DS 250</p>
                       </div>
   </div>
@@ -3066,8 +3066,8 @@ vertical-align: -.125em;
 </nav>
 <section id="elevator-pitch" class="level2">
 <h2 class="anchored" data-anchor-id="elevator-pitch">Elevator pitch</h2>
-<p><em>TODO</em></p>
-<div class="cell" data-execution_count="2">
+<p>__</p>
+<div id="monthly-airline-delays-by-airport-for-us-flights-2003-2016" class="cell" data-execution_count="1">
 <details>
 <summary>Read project data</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -3076,136 +3076,22 @@ vertical-align: -.125em;
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sqlite_file <span class="op">=</span> <span class="st">&quot;lahmansbaseballdb.sqlite&quot;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> sqlite3.<span class="ex">connect</span>(sqlite_file)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&quot;SELECT * FROM collegeplaying WHERE schoolID LIKE &#39;%byui%&#39;;&quot;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>batting5 <span class="op">=</span> pd.read_sql_query(q, con)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>batting5.head(<span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> sqlite3.<span class="ex">connect</span>(sqlite_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="monthly-airline-delays-by-airport-for-us-flights-2003-2016" class="cell-output cell-output-display" data-execution_count="6">
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">ID</th>
-<th data-quarto-table-cell-role="th">playerID</th>
-<th data-quarto-table-cell-role="th">schoolID</th>
-<th data-quarto-table-cell-role="th">yearID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>2568</td>
-<td>catetr01</td>
-<td>idbyuid</td>
-<td>2002</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>9046</td>
-<td>lindsma01</td>
-<td>idbyuid</td>
-<td>2001</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>9047</td>
-<td>lindsma01</td>
-<td>idbyuid</td>
-<td>2002</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>14901</td>
-<td>stephga01</td>
-<td>idbyuid</td>
-<td>1991</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>14902</td>
-<td>stephga01</td>
-<td>idbyuid</td>
-<td>1992</td>
-</tr>
-</tbody>
-</table>
-
 </div>
-</div>
-</div>
-<pre><code>
-::: {.cell execution_count=3}
-``` {.python .cell-code}
-table = pd.read_sql_query(
-    &quot;SELECT * FROM sqlite_master WHERE type=&#39;table&#39;&quot;,
-    con)
-print(table.filter([&#39;name&#39;]))
-print(&#39;\n\n&#39;)
-print(table.sql[8])</code></pre>
-<div class="cell-output cell-output-stdout">
-<pre><code>                   name
-0           allstarfull
-1           appearances
-2        awardsmanagers
-3         awardsplayers
-4   awardssharemanagers
-5    awardsshareplayers
-6               batting
-7           battingpost
-8        collegeplaying
-9             divisions
-10             fielding
-11           fieldingof
-12      fieldingofsplit
-13         fieldingpost
-14           halloffame
-15            homegames
-16              leagues
-17             managers
-18         managershalf
-19                parks
-20               people
-21             pitching
-22         pitchingpost
-23             salaries
-24              schools
-25           seriespost
-26                teams
-27      teamsfranchises
-28            teamshalf
-
-
-
-CREATE TABLE &quot;collegeplaying&quot; (
-    &quot;ID&quot; INTEGER NOT NULL,
-    &quot;playerID&quot; VARCHAR(9) NOT NULL,
-    &quot;schoolID&quot; VARCHAR(15) NULL,
-    &quot;yearID&quot; SMALLINT NULL,
-    PRIMARY KEY (&quot;ID&quot;),
-    FOREIGN KEY(&quot;schoolID&quot;) REFERENCES &quot;schools&quot; (&quot;schoolID&quot;) ON UPDATE NO ACTION ON DELETE NO ACTION,
-    FOREIGN KEY(&quot;playerID&quot;) REFERENCES &quot;people&quot; (&quot;playerID&quot;) ON UPDATE NO ACTION ON DELETE NO ACTION
-)</code></pre>
-</div>
-<p>:::</p>
 </section>
 <section id="questiontask-1" class="level2">
 <h2 class="anchored" data-anchor-id="questiontask-1">QUESTION|TASK 1</h2>
 <p><strong>Write an SQL query to create a new dataframe about baseball players who attended BYU-Idaho. The new table should contain five columns: playerID, schoolID, salary, and the yearID/teamID associated with each salary. Order the table by salary (highest to lowest) and print out the table in your report.</strong></p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="2">
 <details>
 <summary>SQL query that creates a new dataframe about baseball players who attended BYU-Idaho</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&quot;SELECT cp.playerID, cp.schoolID, s.salary, cp.yearID, s.teamID FROM collegeplaying AS cp JOIN salaries AS s ON cp.playerID = s.playerID WHERE cp.schoolID = &#39;idbyuid&#39; ORDER BY s.salary DESC;&quot;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>byuidaho <span class="op">=</span> pd.read_sql_query(q, con)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>byuidaho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&quot;SELECT cp.playerID, cp.schoolID, s.salary, cp.yearID, s.teamID FROM collegeplaying AS cp JOIN salaries AS s ON cp.playerID = s.playerID WHERE cp.schoolID = &#39;idbyuid&#39; ORDER BY s.salary DESC;&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>byuidaho <span class="op">=</span> pd.read_sql_query(q, con)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>byuidaho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="q1" class="cell-output cell-output-display" data-execution_count="8">
+<div id="q1" class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -3473,21 +3359,339 @@ CREATE TABLE &quot;collegeplaying&quot; (
 <p><strong>This three-part question requires you to calculate batting average (number of hits divided by the number of at-bats)</strong></p>
 <ul>
 <li>Write an SQL query that provides playerID, yearID, and batting average for players with at least 1 at bat that year. Sort the table from highest batting average to lowest, and then by playerid alphabetically. Show the top 5 results in your report.</li>
+</ul>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Retrieves top 5 players’ batting averages for a year with at least 1 at-bats.</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&quot;SELECT playerID, yearID, H, AB, CAST(H AS REAL) / CAST(AB AS REAL) AS batting_average FROM batting WHERE AB &gt; 1 ORDER BY batting_average DESC, playerID ASC LIMIT 5;&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>batting <span class="op">=</span> pd.read_sql_query(q, con)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>batting</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="q2-part-1" class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">playerID</th>
+<th data-quarto-table-cell-role="th">yearID</th>
+<th data-quarto-table-cell-role="th">H</th>
+<th data-quarto-table-cell-role="th">AB</th>
+<th data-quarto-table-cell-role="th">batting_average</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>aybarma01</td>
+<td>2001</td>
+<td>3</td>
+<td>3</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>birasst01</td>
+<td>1944</td>
+<td>2</td>
+<td>2</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>brideji01</td>
+<td>1953</td>
+<td>3</td>
+<td>3</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>brownha01</td>
+<td>1951</td>
+<td>2</td>
+<td>2</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>brownpe01</td>
+<td>1894</td>
+<td>2</td>
+<td>2</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
 <li>Use the same query as above, but only include players with at least 10 at bats that year. Print the top 5 results.</li>
+</ul>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Retrieves top 5 players’ batting averages for a year with at least 10 at-bats.</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&quot;SELECT playerID, yearID, H, AB, CAST(H AS REAL) / CAST(AB AS REAL) AS batting_average FROM batting WHERE AB &gt; 10 ORDER BY batting_average DESC, playerID ASC LIMIT 5;&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>batting <span class="op">=</span> pd.read_sql_query(q, con)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>batting</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="q2-part-2" class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">playerID</th>
+<th data-quarto-table-cell-role="th">yearID</th>
+<th data-quarto-table-cell-role="th">H</th>
+<th data-quarto-table-cell-role="th">AB</th>
+<th data-quarto-table-cell-role="th">batting_average</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>nymanny01</td>
+<td>1974</td>
+<td>9</td>
+<td>14</td>
+<td>0.642857</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>carsoma01</td>
+<td>2013</td>
+<td>7</td>
+<td>11</td>
+<td>0.636364</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>silvech01</td>
+<td>1948</td>
+<td>8</td>
+<td>14</td>
+<td>0.571429</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>puccige01</td>
+<td>1930</td>
+<td>9</td>
+<td>16</td>
+<td>0.562500</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>applepe01</td>
+<td>1927</td>
+<td>6</td>
+<td>11</td>
+<td>0.545455</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
 <li>Now calculate the batting average for players over their entire careers (all years combined). Only include players with at least 100 at bats, and print the top 5 results.</li>
 </ul>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Calculates the career batting averages for players with at least 100 at-bats, showing the top 5 results.</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&quot;SELECT playerID, AVG(CAST(H AS REAL) / CAST(AB AS REAL)) AS career_batting_average FROM batting WHERE AB &gt; 100 GROUP BY playerID ORDER BY career_batting_average DESC, playerID ASC LIMIT 5;&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>batting <span class="op">=</span> pd.read_sql_query(q, con)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>batting</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="q2-part-3" class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">playerID</th>
+<th data-quarto-table-cell-role="th">career_batting_average</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>hazlebo01</td>
+<td>0.402985</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>daviscu01</td>
+<td>0.380952</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>fishesh01</td>
+<td>0.374016</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>woltery01</td>
+<td>0.369565</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>barnero01</td>
+<td>0.366576</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="questiontask-3" class="level2">
 <h2 class="anchored" data-anchor-id="questiontask-3">QUESTION|TASK 3</h2>
 <p><strong>Pick any two baseball teams and compare them using a metric of your choice (average salary, home runs, number of wins, etc). Write an SQL query to get the data you need, then make a graph in Altair to visualize the comparison. What do you learn?</strong></p>
+<p><em>The New York Yankees and the Boston Red Sox had a similar average salary throughout the eighties, but starting in the end nineties the Yankees average salary exceeded the Red Sox’ and the gap widened in the 2000’s.</em></p>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Average player salaries for ‘NYA’ and ‘BOS’ by year.</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL Query</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&quot;SELECT s.teamID, s.yearID, AVG(s.salary) AS average_salary FROM salaries AS s JOIN teams AS t ON s.teamID = t.teamID WHERE t.teamID IN (&#39;NYA&#39;, &#39;BOS&#39;) GROUP BY s.teamID, s.yearID;&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>salary <span class="op">=</span> pd.read_sql_query(q, con)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Altair Graph</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>alt.Chart(salary).mark_line().encode(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">&quot;yearID&quot;</span>, title<span class="op">=</span><span class="st">&quot;Year&quot;</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>alt.Y(<span class="st">&quot;average_salary&quot;</span>, title<span class="op">=</span><span class="st">&quot;Average Salary&quot;</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">&quot;teamID&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="q3" class="cell-output cell-output-display" data-execution_count="6">
+
+<style>
+#altair-viz-c5b6024ca3fb48a39c060536da99bf13.vega-embed {
+width: 100%;
+display: flex;
+}
+#altair-viz-c5b6024ca3fb48a39c060536da99bf13.vega-embed details,
+#altair-viz-c5b6024ca3fb48a39c060536da99bf13.vega-embed details summary {
+position: relative;
+}
+</style>
+<div id="altair-viz-c5b6024ca3fb48a39c060536da99bf13"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-c5b6024ca3fb48a39c060536da99bf13") {
+      outputDiv = document.getElementById("altair-viz-c5b6024ca3fb48a39c060536da99bf13");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.14.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.14.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-13cbe24e802b6267bfcb6dd6a35dcbf0"}, "mark": {"type": "line"}, "encoding": {"color": {"field": "teamID", "type": "nominal"}, "x": {"field": "yearID", "title": "Year", "type": "quantitative"}, "y": {"field": "average_salary", "title": "Average Salary", "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v5.14.1.json", "datasets": {"data-13cbe24e802b6267bfcb6dd6a35dcbf0": [{"teamID": "BOS", "yearID": 1985, "average_salary": 435902.4}, {"teamID": "NYA", "yearID": 1985, "average_salary": 711910.2}, {"teamID": "BOS", "yearID": 1986, "average_salary": 496628.9310344828}, {"teamID": "NYA", "yearID": 1986, "average_salary": 660509.0357142857}, {"teamID": "BOS", "yearID": 1987, "average_salary": 676277.8}, {"teamID": "NYA", "yearID": 1987, "average_salary": 488563.2571428571}, {"teamID": "BOS", "yearID": 1988, "average_salary": 579003.8333333334}, {"teamID": "NYA", "yearID": 1988, "average_salary": 648038.4}, {"teamID": "BOS", "yearID": 1989, "average_salary": 672374.9230769231}, {"teamID": "NYA", "yearID": 1989, "average_salary": 552076.6129032258}, {"teamID": "BOS", "yearID": 1990, "average_salary": 642447.90625}, {"teamID": "NYA", "yearID": 1990, "average_salary": 633706.6060606061}, {"teamID": "BOS", "yearID": 1991, "average_salary": 1172250.0}, {"teamID": "NYA", "yearID": 1991, "average_salary": 976577.4285714285}, {"teamID": "BOS", "yearID": 1992, "average_salary": 1406793.0322580645}, {"teamID": "NYA", "yearID": 1992, "average_salary": 1137676.7878787878}, {"teamID": "BOS", "yearID": 1993, "average_salary": 1197438.1612903227}, {"teamID": "NYA", "yearID": 1993, "average_salary": 1291663.6363636365}, {"teamID": "BOS", "yearID": 1994, "average_salary": 1261969.4666666666}, {"teamID": "NYA", "yearID": 1994, "average_salary": 1576942.551724138}, {"teamID": "BOS", "yearID": 1995, "average_salary": 877176.1621621621}, {"teamID": "NYA", "yearID": 1995, "average_salary": 1437495.6176470588}, {"teamID": "BOS", "yearID": 1996, "average_salary": 1177597.2222222222}, {"teamID": "NYA", "yearID": 1996, "average_salary": 1593876.2352941176}, {"teamID": "BOS", "yearID": 1997, "average_salary": 1281139.705882353}, {"teamID": "NYA", "yearID": 1997, "average_salary": 2146260.172413793}, {"teamID": "BOS", "yearID": 1998, "average_salary": 1719909.0909090908}, {"teamID": "NYA", "yearID": 1998, "average_salary": 2087714.59375}, {"teamID": "BOS", "yearID": 1999, "average_salary": 2048306.4516129033}, {"teamID": "NYA", "yearID": 1999, "average_salary": 2990839.9655172415}, {"teamID": "BOS", "yearID": 2000, "average_salary": 2598011.1}, {"teamID": "NYA", "yearID": 2000, "average_salary": 3297795.0}, {"teamID": "BOS", "yearID": 2001, "average_salary": 3438619.78125}, {"teamID": "NYA", "yearID": 2001, "average_salary": 3622165.9032258065}, {"teamID": "BOS", "yearID": 2002, "average_salary": 3612202.0}, {"teamID": "NYA", "yearID": 2002, "average_salary": 4342364.931034483}, {"teamID": "BOS", "yearID": 2003, "average_salary": 3701722.222222222}, {"teamID": "NYA", "yearID": 2003, "average_salary": 5455350.5}, {"teamID": "BOS", "yearID": 2004, "average_salary": 4243283.333333333}, {"teamID": "NYA", "yearID": 2004, "average_salary": 6351515.517241379}, {"teamID": "BOS", "yearID": 2005, "average_salary": 4410897.321428572}, {"teamID": "NYA", "yearID": 2005, "average_salary": 8011800.653846154}, {"teamID": "BOS", "yearID": 2006, "average_salary": 4448141.62962963}, {"teamID": "NYA", "yearID": 2006, "average_salary": 6952252.821428572}, {"teamID": "BOS", "yearID": 2007, "average_salary": 5108079.071428572}, {"teamID": "NYA", "yearID": 2007, "average_salary": 6759251.607142857}, {"teamID": "BOS", "yearID": 2008, "average_salary": 4763929.821428572}, {"teamID": "NYA", "yearID": 2008, "average_salary": 6929892.966666667}, {"teamID": "BOS", "yearID": 2009, "average_salary": 4184344.793103448}, {"teamID": "NYA", "yearID": 2009, "average_salary": 7748045.730769231}, {"teamID": "BOS", "yearID": 2010, "average_salary": 5601632.172413793}, {"teamID": "NYA", "yearID": 2010, "average_salary": 8253335.56}, {"teamID": "BOS", "yearID": 2011, "average_salary": 5991202.777777778}, {"teamID": "NYA", "yearID": 2011, "average_salary": 6975000.9655172415}, {"teamID": "BOS", "yearID": 2012, "average_salary": 5093724.029411765}, {"teamID": "NYA", "yearID": 2012, "average_salary": 6776630.655172414}, {"teamID": "BOS", "yearID": 2013, "average_salary": 5225172.413793104}, {"teamID": "NYA", "yearID": 2013, "average_salary": 7483189.870967742}, {"teamID": "BOS", "yearID": 2014, "average_salary": 4484513.838709678}, {"teamID": "NYA", "yearID": 2014, "average_salary": 8230996.125}, {"teamID": "BOS", "yearID": 2015, "average_salary": 5659481.25}, {"teamID": "NYA", "yearID": 2015, "average_salary": 7336274.379310345}, {"teamID": "BOS", "yearID": 2016, "average_salary": 6501577.9655172415}, {"teamID": "NYA", "yearID": 2016, "average_salary": 7689579.0344827585}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
 </section>
 <section id="appendix-a-all-python-code" class="level2">
 <h2 class="anchored" data-anchor-id="appendix-a-all-python-code">APPENDIX A (All Python Code)</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>import pandas as pd
-import altair as alt
 import numpy as np
-</code></pre>
+import altair as alt
+import sqlite3
+
+# Read project data
+sqlite_file = &quot;lahmansbaseballdb.sqlite&quot;
+con = sqlite3.connect(sqlite_file)
+
+# SQL query that creates a new dataframe about baseball players who attended BYU-Idaho
+q = &quot;SELECT cp.playerID, cp.schoolID, s.salary, cp.yearID, s.teamID FROM collegeplaying AS cp JOIN salaries AS s ON cp.playerID = s.playerID WHERE cp.schoolID = &#39;idbyuid&#39; ORDER BY s.salary DESC;&quot;
+
+byuidaho = pd.read_sql_query(q, con)
+byuidaho
+
+# Retrieves top 5 players&#39; batting averages for a year with at least 1 at-bats.
+q = &quot;SELECT playerID, yearID, H, AB, CAST(H AS REAL) / CAST(AB AS REAL) AS batting_average FROM batting WHERE AB &gt; 1 ORDER BY batting_average DESC, playerID ASC LIMIT 5;&quot;
+
+batting = pd.read_sql_query(q, con)
+batting
+
+# Retrieves top 5 players&#39; batting averages for a year with at least 10 at-bats.
+q = &quot;SELECT playerID, yearID, H, AB, CAST(H AS REAL) / CAST(AB AS REAL) AS batting_average FROM batting WHERE AB &gt; 10 ORDER BY batting_average DESC, playerID ASC LIMIT 5;&quot;
+
+batting = pd.read_sql_query(q, con)
+batting
+
+# Calculates the career batting averages for players with at least 100 at-bats, showing the top 5 results.
+q = &quot;SELECT playerID, AVG(CAST(H AS REAL) / CAST(AB AS REAL)) AS career_batting_average FROM batting WHERE AB &gt; 100 GROUP BY playerID ORDER BY career_batting_average DESC, playerID ASC LIMIT 5;&quot;
+
+batting = pd.read_sql_query(q, con)
+batting
+
+# SQL Query
+q = &quot;SELECT s.teamID, s.yearID, AVG(s.salary) AS average_salary FROM salaries AS s JOIN teams AS t ON s.teamID = t.teamID WHERE t.teamID IN (&#39;NYA&#39;, &#39;BOS&#39;) GROUP BY s.teamID, s.yearID;&quot;
+salary = pd.read_sql_query(q, con)
+
+# Altair Graph
+alt.Chart(salary).mark_line().encode(
+    x=alt.X(&quot;yearID&quot;, title=&quot;Year&quot;),
+    y=alt.Y(&quot;average_salary&quot;, title=&quot;Average Salary&quot;),
+    color=&#39;teamID&#39;
+)</code></pre>
 <pre><code></code></pre>
 </section>
 
