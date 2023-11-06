@@ -23,45 +23,63 @@ format:
     
 ---
 
+## Elevator pitch
+_TODO_
+
 ```{python}
-# | label: libraries
-# | include: false
-# import requests
+# | label: Houses dataset
+# | code-summary: Read project data
+
+# libraries
 import pandas as pd
 import altair as alt
 import numpy as np
-import requests
+import seaborn as sns
+import matplotlib.pyplot as plt
 
+# scikit learn froms
+from sklearn.model_selection import train_test_split
+from sklearn import tree
+from sklearn.naive_bayes import GaussianNB
+
+# from sklearn.ensemble import GradientBoostingClassifier
+# from sklearn.ensemble import AdaBoostClassifier
+# from sklearn.ensemble import BaggingClassifier
+# from sklearn.ensemble import VotingClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import metrics
+from sklearn.metrics import accuracy_score
+
+# load data
+dwellings_denver = pd.read_csv("dwellings_denver.csv")
+dwellings_ml = pd.read_csv("dwellings_ml.csv")
+dwellings_neighborhoods_ml = pd.read_csv("dwellings_neighborhoods_ml.csv")
+
+alt.data_transformers.enable("json")
 ```
 
+```{python}
 
-## Elevator pitch
-_This dataset provides the birth names by year in the US and by state. It allows us to easily find trends and compare names.
-Here we show that it can be used to determine the probable age of someone according to their age. We can also use it to look at a group of names with a common charasteritic (e.g. Christian names), and compare their usage. Finally, we used it to show that movies can have a significant impact of birth names._
+h_subset = dwellings_ml.filter(
+    [
+        "livearea",
+        "stories",
+        "numbaths",
+        "basement",
+        "nocars",
+        "numbdrm",
+        "sprice",
+        "status_I",
+        "before1980",
+    ]
+).sample(500)
+sns.pairplot(h_subset, hue="before1980")
+```
 
 ```{python}
-# | label: Birth names by year with counts for US states as well
-# | code-summary: Read project data
+corr = h_subset.drop(columns="before1980").corr()
 
-# Read the data from the project repository on GitHub, write it to a local file, then store it in a dataframe called "df".
-url = "https://github.com/byuidatascience/data4dwellings/raw/master/data-raw/dwellings_neighborhoods_ml/dwellings_neighborhoods_ml.csv"
-response = requests.get(url)
-if response.status_code == 200:
-    data = response.text
-    with open("dwellings_neighborhoods_ml.csv", "w") as file:
-        file.write(data)
-else:
-    print("Failed to fetch data from the URL")
-
-# df = pd.read_csv("names_year.csv")
-
-# duplicate_rows = df[df.duplicated(subset=["name", "year"], keep=False)]
-
-# if not duplicate_rows.empty:
-#     print("Duplicate rows found:")
-#     print(duplicate_rows)
-# else:
-#     print("No duplicate rows found.")
+sns.heatmap(corr)
 ```
 
 
@@ -72,7 +90,30 @@ _TODO_
 
 ```{python}
 # | label: Q1
-# | code-summary:
+# | code-summary: blah
+
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=dwellings_ml, x="livearea", y="sprice", hue="before1980")
+plt.xlabel("Living Area (sqft)")
+plt.ylabel("Sale Price ($)")
+plt.title("Sale Price vs. Living Area")
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=dwellings_ml, x="livearea", y="basement", hue="before1980")
+plt.xlabel("Living Area (sqft)")
+plt.ylabel("Sale Price ($)")
+plt.title("Sale Price vs. Living Area")
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=dwellings_ml, x="before1980", y="numbaths")
+plt.xlabel("Before 1980 (0 = No, 1 = Yes)")
+plt.ylabel("Number of Bathrooms")
+plt.title("Boxplot of Number of Bathrooms vs. Before1980")
+plt.show()
+
 ```
 
 
@@ -84,6 +125,39 @@ _TODO_
 ```{python}
 # | label: Q2
 # | code-summary:
+
+# Step 0
+X = dwellings_ml[
+    [
+        "basement",
+        "nocars",
+        "numbdrm",
+        "sprice",
+        "status_I",
+        "livearea",
+        "stories",
+        "numbaths",
+    ]
+]
+y = dwellings_ml["before1980"]
+
+# %%
+# Step 1
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=24, stratify=y
+)
+# %%
+# Step 2
+rf = RandomForestClassifier(random_state=24)  # Creating random forest object
+rf.fit(X_train, y_train)  # Fit with the training data
+
+# %%
+# Step 3
+y_pred = rf.predict(X_test)  # Using the features in the test set to make predictions
+
+# %%
+# Step 4
+accuracy_score(y_test, y_pred)  # Comparing predictions to actual values
 ```
 
 _TODO_
@@ -96,6 +170,11 @@ _TODO_
 ```{python}
 # | label: Q3
 # | code-summary:
+feat_imports = pd.DataFrame(
+    {"feature names": X_train.columns, "importances": rf.feature_importances_}
+).sort_values("importances", ascending=False)
+
+print(feat_imports.to_markdown(index=False))
 ```
 
 ## QUESTION|TASK 4
