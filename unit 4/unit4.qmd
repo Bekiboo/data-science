@@ -24,7 +24,8 @@ format:
 ---
 
 ## Elevator pitch
-_TODO_
+__Can you predict that?__
+_The goal of this project was to build a classification model that predicts whether a house was built before or after 1980. The model has been trained on a dataset of almost 10,000 houses in Denver, Colorado. Using the RandomForestClassifier from scikit-learn, the model is 90% accurate, which indicates that a large proportion of the predictions are correct. The model is also 92% precise, meaning that when the model predicts a positive outcome, it is likely to be correct. Finally, the model has a 92% recall rate which means that the model is good at capturing all positive instances._
 
 ```{python}
 # | label: Houses dataset
@@ -39,8 +40,9 @@ import matplotlib.pyplot as plt
 
 # scikit learn froms
 from sklearn.model_selection import train_test_split
-from sklearn import tree
-from sklearn.naive_bayes import GaussianNB
+
+# from sklearn import tree
+# from sklearn.naive_bayes import GaussianNB
 
 # from sklearn.ensemble import GradientBoostingClassifier
 # from sklearn.ensemble import AdaBoostClassifier
@@ -48,7 +50,7 @@ from sklearn.naive_bayes import GaussianNB
 # from sklearn.ensemble import VotingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score
 
 # load data
 dwellings_denver = pd.read_csv("dwellings_denver.csv")
@@ -56,57 +58,66 @@ dwellings_ml = pd.read_csv("dwellings_ml.csv")
 dwellings_neighborhoods_ml = pd.read_csv("dwellings_neighborhoods_ml.csv")
 
 alt.data_transformers.enable("json")
-```
 
-```{python}
 
-h_subset = dwellings_ml.filter(
-    [
-        "livearea",
-        "stories",
-        "numbaths",
-        "basement",
-        "nocars",
-        "numbdrm",
-        "sprice",
-        "status_I",
-        "before1980",
-    ]
-).sample(500)
-sns.pairplot(h_subset, hue="before1980")
-```
+# X_pred = dwellings_ml.drop(dwellings_ml.filter(regex = 'before1980|yrbuilt|parcel').columns, axis = 1)
+# y_pred = dwellings_ml.filter(regex = "before1980")
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X_pred, y_pred, test_size = .34, random_state = 76)
 
-```{python}
-corr = h_subset.drop(columns="before1980").corr()
+# y_test.mean()
+# X_train['sprice'].head(10).mean()
 
-sns.heatmap(corr)
+# h_subset = dwellings_ml.filter(
+#     [
+#         "livearea",
+#         "stories",
+#         "numbaths",
+#         "basement",
+#         "nocars",
+#         "numbdrm",
+#         "sprice",
+#         "status_I",
+#         "before1980",
+#     ]
+# ).sample(500)
+# sns.pairplot(h_subset, hue="before1980")
+
+# corr = h_subset.drop(columns="before1980").corr()
+
+# sns.heatmap(corr)
 ```
 
 
 ## QUESTION|TASK 1
 __Create 2-3 charts that evaluate potential relationships between the home variables and before1980. Explain what you learn from the charts that could help a machine learning algorithm.__
 
-_TODO_
+_In the first chart we see a clear distinction with houses above $500.000 almost all being built after 1980._
+_In the Basement vs Living area the distinction is less clear, but most pre-1980 houses seem to fall below a trend line, which a machine learning algorythm should be able to pick up._
+_Lastly, the Number of Bathrooms boxplot show a clear distinction before and after 1980._
+_All of these will help a classification algorythm to predict the year of construction of a house._
 
 ```{python}
 # | label: Q1
-# | code-summary: blah
+# | code-summary: three matplotlib charts to show the relationship between the home variables and before1980
 
-
+# 1. Sale Price vs. Living Area - Scatterplot
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=dwellings_ml, x="livearea", y="sprice", hue="before1980")
 plt.xlabel("Living Area (sqft)")
-plt.ylabel("Sale Price ($)")
+plt.ylabel("Sale Price (million $)")
 plt.title("Sale Price vs. Living Area")
 plt.show()
 
+# 2. Basement Area vs. Living Area - Scatterplot
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=dwellings_ml, x="livearea", y="basement", hue="before1980")
 plt.xlabel("Living Area (sqft)")
-plt.ylabel("Sale Price ($)")
-plt.title("Sale Price vs. Living Area")
+plt.ylabel("Basement Area (sqft)")
+plt.title("Basement Area vs. Living Area")
 plt.show()
 
+# 3. Number of Bathrooms vs. Before1980 - Boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(data=dwellings_ml, x="before1980", y="numbaths")
 plt.xlabel("Before 1980 (0 = No, 1 = Yes)")
@@ -120,13 +131,23 @@ plt.show()
 ## QUESTION|TASK 2
 __Build a classification model labeling houses as being built “before 1980” or “during or after 1980”. Your goal is to reach or exceed 90% accuracy. Explain your final model choice (algorithm, tuning parameters, etc) and describe what other models you tried.__
 
-_TODO_
+_The Random Forest Classifier was chosen as it had the highest accuracy score of 0.9. The model was trained on 70% of the data and tested on the remaining 30%. The random state was set to 24 to ensure reproducibility. The features used were: basement, nocars, numbdrm, sprice, status_I, livearea, stories, numbaths._
+_Those features were chosen as they had the highest importance in the model._
+_The model was also tested with other featuresbut the accuracy score was lower than with the features mentioned above._
+_The following models were tested:_
+
+*   Decision Tree Classifier
+*   Naive Bayes Classifier
+*   Gradient Boosting Classifier
+*   Ada Boost Classifier
+*   Bagging Classifier
+*   Voting Classifier
 
 ```{python}
 # | label: Q2
-# | code-summary:
+# | code-summary: Classification model labeling houses as being built “before 1980” or “during or after 1980”
 
-# Step 0
+# Selecting the features and the target
 X = dwellings_ml[
     [
         "basement",
@@ -141,64 +162,213 @@ X = dwellings_ml[
 ]
 y = dwellings_ml["before1980"]
 
-# %%
-# Step 1
+# Splitting the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=24, stratify=y
 )
-# %%
-# Step 2
-rf = RandomForestClassifier(random_state=24)  # Creating random forest object
-rf.fit(X_train, y_train)  # Fit with the training data
 
-# %%
-# Step 3
-y_pred = rf.predict(X_test)  # Using the features in the test set to make predictions
+# Creating the random forest object
+rf = RandomForestClassifier(random_state=24)
+rf.fit(X_train, y_train)
 
-# %%
-# Step 4
-accuracy_score(y_test, y_pred)  # Comparing predictions to actual values
+# Predicting based on the model we've trained
+y_pred = rf.predict(X_test)
+
+# Evaluating the model
+accuracy_score(y_test, y_pred)
 ```
 
-_TODO_
 
 ## QUESTION|TASK 3
 __Justify your classification model by discussing the most important features selected by your model. This discussion should include a chart and a description of the features.__
 
-_TODO_
+_The most important features selected for the model are:_
+
+* livearea: Living area in square feet
+* sprice: Sale price in dollars
+* basement: Basement area in square feet
+* numbaths: Number of bathrooms
+* stories: Number of stories
 
 ```{python}
 # | label: Q3
-# | code-summary:
+# | code-summary: Chart and description of the most important features selected by the model
+
+# Plotting the feature importances
 feat_imports = pd.DataFrame(
     {"feature names": X_train.columns, "importances": rf.feature_importances_}
 ).sort_values("importances", ascending=False)
 
-print(feat_imports.to_markdown(index=False))
+plt.figure(figsize=(10, 6))
+plt.barh(feat_imports["feature names"], feat_imports["importances"])
+plt.xlabel("Feature Importances")
+plt.ylabel("Feature Names")
+plt.title("Feature Importances in Random Forest Model")
+plt.gca().invert_yaxis()
+plt.show()
 ```
 
 ## QUESTION|TASK 4
 __Describe the quality of your classification model using 2-3 different evaluation metrics. You also need to explain how to interpret each of the evaluation metrics you use.__
 
-_TODO_
+_The quality of the classification model is described using Accuracy, Precision and Recall._
+_The model is 90% accurate, which indicates that a large proportion of the predictions are correct._
+_We get a 92% precision score, indicating that when the model predicts a positive outcome, it is likely to be correct._
+_Finally, we get a 92% recall rate which means that the model is good at capturing all positive instances._
 
 ```{python}
 # | label: Q4
-# | code-summary:
+# | code-summary: Description of the quality of the classification model using Accuracy, Precision and Recall
+
+# Calculate the metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+
+# Print the metrics
+print(f"Accuracy: {accuracy:.2f}")
+print(f"Precision: {precision:.2f}")
+print(f"Recall: {recall:.2f}")
 
 ```
-
-
 
 ## APPENDIX A (All Python Code)
 
 ```python
 ```
 ```
+# libraries
 import pandas as pd
 import altair as alt
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
+# scikit learn froms
+from sklearn.model_selection import train_test_split
+
+# from sklearn import tree
+# from sklearn.naive_bayes import GaussianNB
+
+# from sklearn.ensemble import GradientBoostingClassifier
+# from sklearn.ensemble import AdaBoostClassifier
+# from sklearn.ensemble import BaggingClassifier
+# from sklearn.ensemble import VotingClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import metrics
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+
+# load data
+dwellings_denver = pd.read_csv("dwellings_denver.csv")
+dwellings_ml = pd.read_csv("dwellings_ml.csv")
+dwellings_neighborhoods_ml = pd.read_csv("dwellings_neighborhoods_ml.csv")
+
+alt.data_transformers.enable("json")
+
+# X_pred = dwellings_ml.drop(dwellings_ml.filter(regex = 'before1980|yrbuilt|parcel').columns, axis = 1)
+# y_pred = dwellings_ml.filter(regex = "before1980")
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X_pred, y_pred, test_size = .34, random_state = 76)  
+
+# y_test.mean()
+# X_train['sprice'].head(10).mean()
+
+# h_subset = dwellings_ml.filter(
+#     [
+#         "livearea",
+#         "stories",
+#         "numbaths",
+#         "basement",
+#         "nocars",
+#         "numbdrm",
+#         "sprice",
+#         "status_I",
+#         "before1980",
+#     ]
+# ).sample(500)
+# sns.pairplot(h_subset, hue="before1980")
+
+# corr = h_subset.drop(columns="before1980").corr()
+
+# sns.heatmap(corr)
+
+# 1. Sale Price vs. Living Area - Scatterplot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=dwellings_ml, x="livearea", y="sprice", hue="before1980")
+plt.xlabel("Living Area (sqft)")
+plt.ylabel("Sale Price (million $)")
+plt.title("Sale Price vs. Living Area")
+plt.show()
+
+# 2. Basement Area vs. Living Area - Scatterplot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=dwellings_ml, x="livearea", y="basement", hue="before1980")
+plt.xlabel("Living Area (sqft)")
+plt.ylabel("Basement Area (sqft)")
+plt.title("Basement Area vs. Living Area")
+plt.show()
+
+# 3. Number of Bathrooms vs. Before1980 - Boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=dwellings_ml, x="before1980", y="numbaths")
+plt.xlabel("Before 1980 (0 = No, 1 = Yes)")
+plt.ylabel("Number of Bathrooms")
+plt.title("Boxplot of Number of Bathrooms vs. Before1980")
+plt.show()
+
+# Selecting the features and the target
+X = dwellings_ml[
+    [
+        "basement",
+        "nocars",
+        "numbdrm",
+        "sprice",
+        "status_I",
+        "livearea",
+        "stories",
+        "numbaths",
+    ]
+]
+y = dwellings_ml["before1980"]
+
+# Splitting the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=24, stratify=y
+)
+
+# Creating the random forest object
+rf = RandomForestClassifier(random_state=24)  # Creating random forest object
+rf.fit(X_train, y_train)  # Fit with the training data
+
+# Predicting based on the model we've trained
+y_pred = rf.predict(X_test)  # Using the features in the test set to make predictions
+
+# Evaluating the model
+accuracy_score(y_test, y_pred)  # Comparing predictions to actual values
+
+# Plotting the feature importances
+feat_imports = pd.DataFrame(
+    {"feature names": X_train.columns, "importances": rf.feature_importances_}
+).sort_values("importances", ascending=False)
+
+plt.figure(figsize=(10, 6))
+plt.barh(feat_imports["feature names"], feat_imports["importances"])
+plt.xlabel("Feature Importances")
+plt.ylabel("Feature Names")
+plt.title("Feature Importances in Random Forest Model")
+plt.gca().invert_yaxis()
+plt.show()
+
+
+# Calculate the metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+
+# Print the metrics
+print(f"Accuracy: {accuracy:.2f}")
+print(f"Precision: {precision:.2f}")
+print(f"Recall: {recall:.2f}")
 ```
 ```
 ```
