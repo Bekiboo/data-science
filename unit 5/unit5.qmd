@@ -1,0 +1,195 @@
+---
+title: "Client Report - Project 5: The war with Star Wars"
+subtitle: "Course DS 250"
+author: "Julien Connault"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+## Elevator pitch
+_TODO._
+
+```{python}
+# | label: Houses dataset
+# | code-summary: Read project data
+
+# import pandas as pd 
+# import altair as alt
+# import numpy as np
+
+url = 'https://github.com/fivethirtyeight/data/raw/master/star-wars-survey/StarWars.csv'
+
+
+dat_names = pd.read_csv(url, encoding = "ISO-8859-1", nrows = 1).melt()
+dat = pd.read_csv(url, encoding = "ISO-8859-1", skiprows = 2, header = None )
+```
+
+```{python}
+dat_names
+```
+
+## QUESTION|TASK 1
+__Shorten the column names and clean them up for easier use with pandas. Provide a table or list that exemplifies how you fixed the names.__
+
+_TODO_
+
+```{python}
+# | label: Q1
+# | code-summary: 
+
+# (dat_names
+#    .replace('Unnamed: \d{1,2}', np.nan, regex=True)
+#    .replace('Response', "")
+# )
+
+# (dat_names
+#    .replace('Unnamed: \d{1,2}', np.nan, regex=True)
+#    .replace('Response', "")
+#    .assign(
+#       clean_variable = lambda x: x.variable.str.strip()
+#          .replace(
+#             'Which of the following Star Wars films have you seen? Please select all that apply.','seen'),
+#       clean_value = lambda x: x.value.str.strip()
+#    )
+# )
+
+dat_names = (dat_names
+   .replace('Unnamed: \d{1,2}', np.nan, regex=True)
+   .replace('Response', "")
+   .assign(
+      clean_variable = lambda x: x.variable.str.strip()
+         .replace(
+            'Which of the following Star Wars films have you seen? Please select all that apply.','seen'),
+      clean_value = lambda x: x.value.str.strip())
+   .fillna(method = 'ffill')
+   .assign(
+      column_name = lambda x: x.clean_variable.str.cat(x.clean_value, sep = "__"),
+   )
+)
+```
+```{python}
+dat_names.column_name
+# dat.columns 
+
+
+```
+```{python}
+# Shorten the column names and clean them 
+# up for easier use with pandas.
+
+# we want to use this with the .replace() command that accepts a dictionary.
+variables_replace = {
+    'Which of the following Star Wars films have you seen\\? Please select all that apply\\.':'seen',
+    'Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.':'rank',
+    'Please state whether you view the following characters favorably, unfavorably, or are unfamiliar with him/her.':'view',
+    'Do you consider yourself to be a fan of the Star Trek franchise\\?':'star_trek_fan',
+    'Do you consider yourself to be a fan of the Expanded Universe\\?\x8cæ':'expanded_fan',
+    'Are you familiar with the Expanded Universe\\?':'know_expanded',
+    'Have you seen any of the 6 films in the Star Wars franchise\\?':'seen_any',
+    'Do you consider yourself to be a fan of the Star Wars film franchise\\?':'star_wars_fans',
+    'Which character shot first\\?':'shot_first',
+    'Unnamed: \d{1,2}':np.nan,
+    ' ':'_',
+}
+
+values_replace = {
+    'Response':'',
+    'Star Wars: Episode ':'',
+    ' ':'_'
+}
+
+
+```
+```{python}
+print(dat_names.value)
+dat_names.value.str.strip().replace(values_replace, regex=True)
+
+
+```
+```{python}
+print(dat_names.variable)
+dat_names.variable.str.strip().replace(variables_replace, regex=True)
+
+
+```
+```{python}
+
+dat_cols_use = (dat_names
+    .assign(
+        value_replace = lambda x:  x.value.str.strip().replace(values_replace, regex=True),
+        variable_replace = lambda x: x.variable.str.strip().replace(variables_replace, regex=True)
+    )
+    .fillna(method = 'ffill')
+    .fillna(value = "")
+    .assign(column_names = lambda x: x.variable_replace.str.cat(x.value_replace, sep = "__").str.strip('__').str.lower())
+    )
+dat_cols_use
+
+```
+
+
+## QUESTION|TASK 2
+__Clean and format the data so that it can be used in a machine learning model. As you format the data, you should complete each item listed below. In your final report provide example(s) of the reformatted data with a short description of the changes made.__
+*   Filter the dataset to respondents that have seen at least one film.
+*   Create a new column that converts the age ranges to a single number. Drop the age range categorical column.
+*   Create a new column that converts the education groupings to a single number. Drop the school categorical column
+*   Create a new column that converts the income ranges to a single number. Drop the income range categorical column.
+*   Create your target (also known as “y” or “label”) column based on the new income range column.
+*   One-hot encode all remaining categorical columns.
+
+_TODO_
+
+```{python}
+# | label: Q2
+# | code-summary: 
+```
+
+
+## QUESTION|TASK 3
+__Validate that the data provided on GitHub lines up with the article by recreating 2 of the visuals from the article.__
+
+_TODO_
+
+
+```{python}
+# | label: Q3
+# | code-summary: 
+```
+
+## QUESTION|TASK 4
+__Build a machine learning model that predicts whether a person makes more than $50k. Describe your model and report the accuracy.__
+
+_TODO_
+
+```{python}
+# | label: Q4
+# | code-summary: 
+
+```
+
+## APPENDIX A (All Python Code)
+
+```python
+```
+```
+
+```
+```
+```
